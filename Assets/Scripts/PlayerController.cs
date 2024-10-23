@@ -11,6 +11,15 @@ public class PlayerController : Controller
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void Start()
     {
+     //checks if we have a game manager
+        if (GameManager.instance != null)
+        {
+            //checks if its tracking the players
+            if (GameManager.instance.players != null)
+            {
+                GameManager.instance.players.Add(this);
+            }
+        }
         base.Start();
     }
 
@@ -28,17 +37,44 @@ public class PlayerController : Controller
         {
             pawn.MoveForward();
         }
+                else
+        {
+            pawn.noiseMaker.volumeDistance = 0;
+        }
          if (Input.GetKey(moveBackwardKey))
         {
             pawn.MoveBackward();
+        }
+                else
+        {
+            pawn.noiseMaker.volumeDistance = 0;
         }
          if (Input.GetKey(rotateClockwiseKey))
         {
             pawn.RotateClockwise();
         }
+                else
+        {
+            pawn.noiseMaker.volumeDistance = 0;
+        }
          if (Input.GetKey(rotateCounterClockwiseKey))
         {
             pawn.RotateCounterClockwise();
+        }
+                else
+        {
+            pawn.noiseMaker.volumeDistance = 0;
+        }
+    }
+        public void OnDestroy()
+    {
+        //if game manager
+        if(GameManager.instance != null)
+        {
+            if (GameManager.instance.players != null)
+            {
+                GameManager.instance.players.Remove(this);
+            }
         }
     }
 }
