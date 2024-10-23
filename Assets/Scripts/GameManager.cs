@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     //gets the transform of PlayerSpawn
     public Transform PlayerSpawnTransform;
+    public List<PlayerController> players;
     //Awake means this is the first thing that happens, this code looks for other instance's of gamemanagers and destroys them, without destroying this. 
     private void Awake ()
     {
