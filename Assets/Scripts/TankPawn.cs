@@ -8,6 +8,7 @@ public class TankPawn : Pawn
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void Start()
     {
+        nextEventTime = Time.time + 1/fireRate;
         base.Start();
     }
 
@@ -25,13 +26,28 @@ public class TankPawn : Pawn
     public override void MoveBackward()
     {
         mover.Move(transform.forward, -moveSpeed);
+        noiseMaker.volumeDistance = movingVolumeDistance;
     }
     public override void RotateClockwise()
     {
         mover.Rotate(turnSpeed);
+        noiseMaker.volumeDistance = movingVolumeDistance;
     }
     public override void RotateCounterClockwise()
     {
         mover.Rotate(-turnSpeed);
     }
+
+     //Code for our AI\
+    
+    //creates the RotateTowards command to get our AI to find the direction the players in
+    public override void RotateTowards(Vector3 targetPosition)
+    {
+        //creates a vectorToTarget by taking its posiition and subtracting ours
+        Vector3 vectorToTarget = targetPosition - transform.position;
+        //gets our target rotation to look donwn that vector
+        Quaternion targetRotation = Quaternion.LookRotation(vectorToTarget, Vector3.up);
+        //rotate towards the vector by our turn speed instead of in 1 frame
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+    }   
 }
